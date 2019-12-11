@@ -2,6 +2,7 @@ const config = require('config')
 const usersRoute = require('./routes/users')
 const express = require('express')
 const bodyParser = require('body-parser')
+const cors = require('cors')
 const app = express()
 
 //use config module to get the privatekey, if no private key set, end the application
@@ -13,6 +14,7 @@ if (!config.get('myprivatekey')) {
 app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
+app.use(cors())
 //use users route for api/users
 app.use('/api/users', usersRoute)
 
