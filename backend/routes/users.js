@@ -6,13 +6,13 @@ const token = require('../utils/jwt')
 const router = express.Router()
 
 router.post('/register', async (req, res) => {
-  const { name, email, password } = req.body
-  if (!name || !email || !password) {
+  const { username, email, password } = req.body
+  if (!username || !email || !password) {
     res.sendStatus(418)
     return
   }
   const hashedPassword = await bcrypt.hash(password, 10)
-  const createUserMutation = `mutation createUser { insert_users(objects: {name: "${name}", password: "${hashedPassword}", email: "${email}"}) {
+  const createUserMutation = `mutation createUser { insert_users(objects: {name: "${username}", password: "${hashedPassword}", email: "${email}"}) {
         returning {
           id
         }
