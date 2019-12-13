@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { setUser } from "../stateContext";
+import Alert from "react-bootstrap/Alert";
 
 export default function Login() {
   const [username, setUsername] = useState("");
@@ -20,10 +21,9 @@ export default function Login() {
     })
       .then(res => res.json())
       .then(json => {
-        console.log(json);
         if (json.token) {
           localStorage.setItem("token", json.token);
-          localStorage.setItem("user", { username, password });
+          localStorage.setItem("user", JSON.stringify({ username }));
           setUser({ username });
         }
       })
@@ -58,14 +58,9 @@ export default function Login() {
             onChange={e => setPassword(e.target.value)}
           />
         </Form.Group>
-        {loginError ? (
-          <Form.Group controlId="formBasicError">
-            <Form.Label>{loginError}</Form.Label>
-          </Form.Group>
-        ) : (
-          <div></div>
-        )}
-
+        <Alert show={loginError} variant="danger">
+          {loginError}
+        </Alert>
         <Button variant="primary" type="submit">
           Login
         </Button>
