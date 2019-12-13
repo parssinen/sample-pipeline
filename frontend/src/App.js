@@ -8,6 +8,7 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import Navbar from "react-bootstrap/Navbar";
 import Home from "./components/Home";
+import { Redirect } from "react-router-dom";
 import { useGlobalState, setUser } from "./stateContext";
 
 function App() {
@@ -16,9 +17,9 @@ function App() {
   useEffect(() => {
     const userFromStorage = localStorage.getItem("user");
     if (userFromStorage) {
-      setUser(userFromStorage);
+      setUser(JSON.parse(userFromStorage));
     }
-  });
+  }, []); // <- empty array ensures this useEffect is ran only once
 
   const logout = () => {
     localStorage.removeItem("user");
@@ -37,11 +38,14 @@ function App() {
           {user ? (
             <Link to="/" onClick={logout}>
               Log out
+              <Redirect to="/" />
             </Link>
           ) : (
             <Link to="/login">Login</Link>
           )}
           <Link to="/register">Register</Link>
+
+          {user ? <span>{user.username}</span> : null}
         </Navbar>
 
         <Row>
