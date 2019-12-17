@@ -15,6 +15,17 @@ jobs:
     steps:
       - checkout
 
+      - environment:
+          HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:@postgres:5432/postgres
+          HASURA_GRAPHQL_ENABLE_CONSOLE: true
+          HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
+          HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkeymyadminsecretkeymyadminsecretkey
+          HASURA_GRAPHQL_JWT_SECRET:
+            {
+              "type": "HS256",
+              "key": "myadminsecretkeymyadminsecretkeymyadminsecretkey",
+            }
+
       # Download and cache dependencies
       - restore_cache:
           keys:
