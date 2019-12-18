@@ -1,44 +1,80 @@
 version: 2
 jobs:
-  build:
+  backend:
     docker:
       # specify the version you desire here
       - image: circleci/node:10
 
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      - image: hasura/graphql-engine:v1.0.0-rc.1
-
-    working_directory: ~/repo
+    working_directory: ~/repo/backend
 
     steps:
       - checkout
 
-      - environment:
-          HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:@postgres:5432/postgres
-          HASURA_GRAPHQL_ENABLE_CONSOLE: true
-          HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
-          HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkeymyadminsecretkeymyadminsecretkey
-          HASURA_GRAPHQL_JWT_SECRET:
-            {
-              "type": "HS256",
-              "key": "myadminsecretkeymyadminsecretkeymyadminsecretkey",
-            }
-
       # Download and cache dependencies
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "package.json" }}
+            - v1-dependencies-{{ checksum "backend/package.json" }}
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
 
-      - run: npm install
+      - run:
+          name: Install packages for backend
+          command: |
+            cd backend
+            npm install
 
       - save_cache:
           paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
+            - backend/node_modules
+          key: v1-dependencies-{{ checksum "backend/package.json" }}
 
       # run tests!
-      - run: npm test
+      - run:
+          name: Test backend
+          command: |
+            cd backend
+            npm test
+
+  frontend:
+    docker:
+      - image: circleci/node:10
+
+    working_directory: ~/repo/frontend
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+            - v1-deps-{{ checksum "frontend/package.json" }}
+            - v1-deps-
+
+      - run:
+          name: Install packages for frontend
+          command: |
+            cd frontend
+            npm install
+
+      - save_cache:
+          paths:
+            - frontend/node_modules
+          key: v1-deps-{{ checksum "frontend/package.json" }}
+
+      - run:
+          name: Test frontend
+          command: |
+            cd frontend
+            npm test
+
+      - run:
+          name: Build frontend
+          command: |
+            cd frontend
+            npm build
+
+workflows:
+  version: 2
+  back-front:
+    jobs:
+      - backend
+      - frontend
