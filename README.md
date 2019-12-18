@@ -3,6 +3,7 @@
 This project showcases a pipeline for a simple web app.
 
 Project stack:
+
 - Node.js backend with Express
 - React frontend
 - Circle CI for continuous integration
@@ -23,7 +24,6 @@ Project stack:
    2. Logging in users (passwords hashed with bcrypt, 10 rounds of salt) - successful login returns JWT for quering GraphQL
 6. You also now have a development version of Hasura serving a GraphQL API with PostgreSql as database
 
-
 ## Authentication flow
 
 1. Log in with correct username and password using frontend
@@ -31,5 +31,9 @@ Project stack:
    1. Backend checks credentials (username and hashed password) against GraphQL
    2. If credentials match, backend generates JWT
    3. This JWT is sent as a response
-3. If frontend receives JWT, it is stored into local storage 
+3. If frontend receives JWT, it is stored into local storage
 4. From localstorage this JWT can be sent in every request to GraphQL to authenticate whether this user can have access to the particular data they are requesting
+
+## CI
+
+- to fine-tune the circle ci config `.circleci/config.yml`, install CircleCi cli and run your desired jobs using `circleci local execute --job insertJobNameHere`
