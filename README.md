@@ -33,3 +33,17 @@ Project stack:
    3. This JWT is sent as a response
 3. If frontend receives JWT, it is stored into local storage 
 4. From localstorage this JWT can be sent in every request to GraphQL to authenticate whether this user can have access to the particular data they are requesting
+
+## Migrations
+
+Create a working basic setup by applying migrations in this repo.
+
+### Create migrations from current state
+1. Disable Hasura console by changing HASURA_GRAPHQL_ENABLE_CONSOLE environment variable to false
+2. Restart your Hasura server, `docker-compose up` if necessary
+3. `hasura migrate create "init" --from-server`
+
+### Apply migrations
+1. Disable Hasura console by changing HASURA_GRAPHQL_ENABLE_CONSOLE environment variable to false
+2. Restart your Hasura server, `docker-compose up` if necessary
+3. Add admin secret as an environment variable `export HASURA_GRAPHQL_ADMIN_SECRET=<your-admin-secret>`
