@@ -12,13 +12,15 @@ if (!config.get('myprivatekey')) {
 }
 
 app.use(express.json())
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({
+  extended: false
+}))
 app.use(bodyParser.json())
 app.use(cors())
 //use users route for api/users
 app.use('/api/users', usersRoute)
 
 const port = process.env.PORT || 3000
-app.listen(port, () => console.log(`Listening on port ${port}...`))
+if (process.env.NODE_ENV !== "test") app.listen(port, () => console.log(`Listening on port ${port}...`))
 
 module.exports = app
