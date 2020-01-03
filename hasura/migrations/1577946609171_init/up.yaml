@@ -1,0 +1,75 @@
+- args:
+    allowlist:
+    - collection: allowed-queries
+    functions: []
+    query_collections:
+    - comment: null
+      definition:
+        queries:
+        - name: MyQuery
+          query: |-
+            query MyQuery {
+              users {
+                id,
+                name
+              }
+            }
+      name: allowed-queries
+    remote_schemas: []
+    tables:
+    - array_relationships: []
+      computed_fields: []
+      configuration:
+        custom_column_names: {}
+        custom_root_fields:
+          delete: null
+          insert: null
+          select: null
+          select_aggregate: null
+          select_by_pk: null
+          update: null
+      delete_permissions:
+      - comment: null
+        permission:
+          filter: {}
+        role: user
+      event_triggers: []
+      insert_permissions:
+      - comment: null
+        permission:
+          check: {}
+          columns:
+          - email
+          - id
+          - name
+          - password
+          set: {}
+        role: user
+      is_enum: false
+      object_relationships: []
+      select_permissions:
+      - comment: null
+        permission:
+          allow_aggregations: true
+          columns:
+          - email
+          - id
+          - name
+          - password
+          computed_fields: []
+          filter: {}
+        role: user
+      table: users
+      update_permissions:
+      - comment: null
+        permission:
+          columns:
+          - email
+          - id
+          - name
+          - password
+          filter: {}
+          set: {}
+        role: user
+    version: 2
+  type: replace_metadata
