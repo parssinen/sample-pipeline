@@ -44,3 +44,19 @@ Project stack:
 
 Connect to your ec2, then from the ec2 connect to your RDS instance:
 `psql -h DB_HOSTNAME -p 5432 -U DB_USERNAME -W DB_NAME`
+
+## Migrations
+
+Create a working basic setup by applying migrations in this repo.
+
+### Create migrations from current state
+
+1. Disable Hasura console by changing HASURA_GRAPHQL_ENABLE_CONSOLE environment variable to false
+2. Restart your Hasura server, `docker-compose up` if necessary
+3. `hasura migrate create "init" --from-server`
+
+### Apply migrations
+
+1. Disable Hasura console by changing HASURA_GRAPHQL_ENABLE_CONSOLE environment variable to false
+2. Restart your Hasura server, `docker-compose up` if necessary
+3. Add admin secret as an environment variable `export HASURA_GRAPHQL_ADMIN_SECRET=<your-admin-secret>`
