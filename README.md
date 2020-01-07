@@ -24,6 +24,10 @@ Create-react-app frontend
 
 Contains migrations (tables, views, functions, relationships, permissions, remote chemas etc.) for Hasura
 
+### Testcafe
+
+End-to-end tests for registering and logging in
+
 # Development config
 
 1. Setup config
@@ -64,3 +68,8 @@ Create a working basic setup by applying migrations in this repo.
 1. Disable Hasura console by changing HASURA_GRAPHQL_ENABLE_CONSOLE environment variable to false
 2. Restart your Hasura server, `docker-compose up` if necessary
 3. Add admin secret as an environment variable `export HASURA_GRAPHQL_ADMIN_SECRET=<your-admin-secret>`
+
+### Run tests
+
+`cd testcafe`
+`testcafe chrome register.js`
