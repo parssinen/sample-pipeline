@@ -1,6 +1,8 @@
 const request = require('supertest')
-const assert = require('assert')
+const query = require('../utils/queries')
 const app = require('../index')
+
+const testuserName = 'Testuser'
 
 describe('Users endpoint', () => {
   it('should not allow registration without email', async done => {
@@ -8,7 +10,7 @@ describe('Users endpoint', () => {
       .post('/api/users/register')
       .send({
         username: 'Testuser',
-        password: 'Testpassword'
+        password: 'Testpassword',
       })
       .expect(418)
       .end(err => {
@@ -21,7 +23,7 @@ describe('Users endpoint', () => {
       .post('/api/users/register')
       .send({
         username: 'Testuser',
-        email: 'Testpassword'
+        email: 'Testpassword',
       })
       .expect(418)
       .end(err => {
@@ -34,7 +36,7 @@ describe('Users endpoint', () => {
       .post('/api/users/register')
       .send({
         email: 'Testuser',
-        password: 'Testpassword'
+        password: 'Testpassword',
       })
       .expect(418)
       .end(err => {
@@ -58,9 +60,9 @@ describe('Users endpoint', () => {
   })
   it('Log testuser in', async () => {
     const login = {
-      user: "Testuser",
-      password: "Testpassword"
-    };
+      user: 'Testuser',
+      password: 'Testpassword',
+    }
     try {
       await request(app)
         .post('/api/users/login')
@@ -69,5 +71,18 @@ describe('Users endpoint', () => {
     } catch (err) {
       console.log(`Error ${err}`)
     }
-  });
+  })
+})
+
+describe('Cleanup ', () => {
+  it('Delete testusers', async done => {
+    const deleteTestuserMutation = `mutation deleteTest {
+            delete_users(where: {name: {_eq: "Testuser"}}) {
+              affected_rows
+            }
+          }`
+    const deleted = await query(deleteTestuserMutation)
+    console.log('Deleted rows: ', deleted)
+    done()
+  })
 })
