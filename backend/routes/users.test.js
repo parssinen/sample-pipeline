@@ -82,7 +82,7 @@ describe('Cleanup ', () => {
             }
           }`
     const deleted = await query(deleteTestuserMutation)
-    console.log('Deleted rows: ', deleted)
+    console.log('Deleted rows count: ', deleted.data.delete_users.affected_rows)
     done()
   })
 })
