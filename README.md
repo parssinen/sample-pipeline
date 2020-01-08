@@ -76,7 +76,3 @@ npm test
 cd sample-pipeline/testcafe
 testcafe chrome register.js
 ```
-
-# Contact
-
-If you want to contact me you can reach me at lauri@nuot.io
