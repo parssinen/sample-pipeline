@@ -72,6 +72,18 @@ jobs:
           command: sudo npm install --global cross-env
 
       - run:
+          name: Install backend packages
+          command: |
+            cd backend
+            npm i
+
+      - run:
+          name: Install frontend packages
+          command: |
+            cd frontend
+            npm i
+
+      - run:
           name: Test backend
           command: |
             cd backend
