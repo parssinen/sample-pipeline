@@ -58,8 +58,6 @@ jobs:
             npm build
 
   test:
-    requires:
-      - build
     docker:
       # specify the version you desire here
       - image: circleci/node:10
@@ -90,4 +88,6 @@ workflows:
   back-front:
     jobs:
       - build
-      - test
+      - test:
+          requires:
+            - build
