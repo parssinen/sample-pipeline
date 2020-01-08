@@ -1,9 +1,9 @@
 const fetch = require('node-fetch')
 const token = require('./jwt')
-const config = require('config')
+const env = require('dotenv').config()
 
 const fetchGql = async gqlQuery => {
-  const gqlUrl = config.get('graphql_url')
+  const gqlUrl = process.env.GRAPHQL_URL
   const result = await fetch(gqlUrl, {
     method: 'POST',
     headers: {
