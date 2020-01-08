@@ -10,7 +10,7 @@ Sample-pipeline contains following components
 
 # Prerequisites
 
-Sample-pipeline was developed using the following versions, most propably works on older versions
+Sample-pipeline was developed using the following versions, most probably works on older versions
 * Node 12.10.0
 * React 16.12.0
 
@@ -76,7 +76,3 @@ npm test
 cd sample-pipeline/testcafe
 testcafe chrome register.js
 ```
-
-# Contact
-
-If you want to contact me you can reach me at lauri@nuot.io
