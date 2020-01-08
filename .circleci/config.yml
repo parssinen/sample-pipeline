@@ -10,10 +10,6 @@ jobs:
     steps:
       - checkout
 
-      - run:
-          name: Change directory to backend
-          command: cd backend
-
       # Download and cache dependencies
       - restore_cache:
           keys:
@@ -72,6 +68,10 @@ jobs:
 
     steps:
       - checkout
+
+      - run:
+          name: Install cross-env
+          command: sudo npm install --global cross-env
 
       - run:
           name: Test backend
