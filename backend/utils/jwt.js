@@ -1,6 +1,8 @@
 const env = require('dotenv').config()
 const jwt = require('jsonwebtoken')
 
+console.log('PRIVATE KEY', process.env.PRIVATE_KEY)
+
 const token = jwt.sign(
   {
     sub: '1234567890',
