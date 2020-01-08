@@ -64,6 +64,7 @@ jobs:
       - image: postgres
       - image: hasura/graphql-engine:v1.0.0-rc.1
         name: hasura
+        command: ["sh", "-c", "sleep 30 && graphql-engine serve"]
 
     working_directory: ~/repo
 
