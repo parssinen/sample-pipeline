@@ -10,7 +10,7 @@ Sample-pipeline contains following components
 
 # Prerequisites
 
-Sample-pipeline was developed using the following versions, most propably works on older versions
+Sample-pipeline was developed using the following versions, most probably works on older versions
 * Node 12.10.0
 * React 16.12.0
 
