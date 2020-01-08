@@ -39,9 +39,10 @@ export default function Login() {
         <Form.Group controlId="formBasicEmail">
           <Form.Label>Username</Form.Label>
           <Form.Control
+            data="username-login"
             type="text"
             placeholder="Username"
-            name="email"
+            name="username"
             value={username}
             onChange={e => setUsername(e.target.value)}
           />
@@ -51,6 +52,7 @@ export default function Login() {
         <Form.Group controlId="formBasicPassword">
           <Form.Label>Password</Form.Label>
           <Form.Control
+            data="password-login"
             type="password"
             placeholder="Password"
             name="password"
@@ -61,7 +63,7 @@ export default function Login() {
         <Alert show={loginError} variant="danger">
           {loginError}
         </Alert>
-        <Button variant="primary" type="submit">
+        <Button data="submit" variant="primary" type="submit">
           Login
         </Button>
       </Form>
