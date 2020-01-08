@@ -6,6 +6,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Login from "./components/Login";
 import Register from "./components/Register";
+import Users from './components/Users'
 import Navbar from "react-bootstrap/Navbar";
 import Home from "./components/Home";
 import { Redirect } from "react-router-dom";
@@ -43,19 +44,22 @@ function App() {
               <Redirect to="/" />
             </Link>
           ) : (
-            <Link data="login" to="/login">
-              Login
+              <Link data="login" to="/login">
+                Login
             </Link>
-          )}
+            )}
           <Link data="register" to="/register">
             Register
           </Link>
-
+          {user ? <Link data="users" to="/users" >Users</Link> : null}
           {user ? <span>{user.username}</span> : null}
         </Navbar>
 
         <Row>
           <Switch>
+            <Route path="/users">
+              <Users />
+            </Route>
             <Route path="/login">
               <Login />
             </Route>
