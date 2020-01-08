@@ -1,14 +1,18 @@
 version: 2
 jobs:
-  backend:
+  build:
     docker:
       # specify the version you desire here
       - image: circleci/node:10
 
-    working_directory: ~/repo/backend
+    working_directory: ~/repo
 
     steps:
       - checkout
+
+      - run:
+          name: Change directory to backend
+          command: cd backend
 
       # Download and cache dependencies
       - restore_cache:
@@ -30,19 +34,10 @@ jobs:
 
       # run tests!
       - run:
-          name: Test backend
+          name: Configure environment for testing
           command: |
-            cd backend
-            npm test
-
-  frontend:
-    docker:
-      - image: circleci/node:10
-
-    working_directory: ~/repo/frontend
-
-    steps:
-      - checkout
+            export PRIVATE_KEY=myadminsecretkeymyadminsecretkeymyadminsecretkey
+            export GRAPHQL_URL=http://localhost:8080/v1/graphql
 
       - restore_cache:
           keys:
@@ -61,20 +56,38 @@ jobs:
           key: v1-deps-{{ checksum "frontend/package.json" }}
 
       - run:
-          name: Test frontend
-          command: |
-            cd frontend
-            npm test
-
-      - run:
           name: Build frontend
           command: |
             cd frontend
             npm build
 
+  test:
+    requires:
+      - build
+    docker:
+      # specify the version you desire here
+      - image: circleci/node:10
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      - run:
+          name: Test backend
+          command: |
+            cd backend
+            npm test
+
+      - run:
+          name: Test frontend
+          command: |
+            cd frontend
+            npm test
+
 workflows:
   version: 2
   back-front:
     jobs:
-      - backend
-      - frontend
+      - build
+      - test
