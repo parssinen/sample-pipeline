@@ -67,6 +67,16 @@ Create a working basic setup by applying migrations included in this repo.
 
 This application can be deployed to [AWS](AWS.md).
 
+## Tests
+
+```
+cd sample-pipeline/backend
+npm test
+
+cd sample-pipeline/testcafe
+testcafe chrome register.js
+```
+
 # Contact
 
 If you want to contact me you can reach me at lauri@nuot.io
