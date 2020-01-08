@@ -62,6 +62,7 @@ jobs:
       # specify the version you desire here
       - image: circleci/node:10
       - image: postgres
+        name: postgres
       - image: hasura/graphql-engine:v1.0.0-rc.1
         name: hasura
         command: ["sh", "-c", "sleep 30 && graphql-engine serve"]
