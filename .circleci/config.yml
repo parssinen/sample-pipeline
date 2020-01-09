@@ -65,6 +65,7 @@ jobs:
       - image: circleci/node:10
       - image: postgres:9.6
         name: postgres
+        command: pg_ctl -D /var/lib/postgresql/data -l logfile start
         environment:
           POSTGRES_USER: postgres
           POSTGRES_DB: postgres
