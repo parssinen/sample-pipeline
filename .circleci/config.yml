@@ -68,7 +68,7 @@ jobs:
         user: postgres
         command: pg_ctl start
         environment:
-          POSTGRES_USER: postgres
+          POSTGRES_USER: root
           POSTGRES_DB: postgres
       - image: hasura/graphql-engine
         name: hasura
