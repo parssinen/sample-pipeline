@@ -172,11 +172,9 @@ jobs:
     # Primary container image where all commands run
 
     docker:
-      - image: circleci/python:3.6.2-stretch-browsers
-        environment:
-          TEST_DATABASE_URL: postgresql://root@localhost/circle_test
-
-      # Service container image
+      - image: hasura/graphql-engine
+        name: hasura
+        command: ["sh", "-c", "sleep 30 && graphql-engine serve"]
 
       - image: circleci/postgres:9.6.5-alpine-ram
 
