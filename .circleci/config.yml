@@ -66,7 +66,7 @@ jobs:
       - image: postgres:9.6
         name: postgres
         user: postgres
-        command: pg_ctl -D /var/lib/postgresql/data -l logfile start
+        command: pg_ctl start
         environment:
           POSTGRES_USER: postgres
           POSTGRES_DB: postgres
