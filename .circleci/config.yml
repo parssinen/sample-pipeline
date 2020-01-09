@@ -1,61 +1,91 @@
-# version: 2
-# jobs:
-#   build:
-#     docker:
-#       # specify the version you desire here
-#       - image: circleci/node:10
+version: 2
+aliases:
+  - &TEST_RESULTS ./test-results/
+jobs:
+  build:
+    docker:
+      # specify the version you desire here
+      - image: circleci/node:10
 
-#     working_directory: ~/repo
+    working_directory: ~/repo
 
-#     steps:
-#       - checkout
+    steps:
+      - checkout
 
-#       # Download and cache dependencies
-#       - restore_cache:
-#           keys:
-#             - v1-dependencies-{{ checksum "backend/package.json" }}
-#             # fallback to using the latest cache if no exact match is found
-#             - v1-dependencies-
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "backend/package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
 
-#       - run:
-#           name: Install packages for backend
-#           command: |
-#             cd backend
-#             npm install
+      - run:
+          name: Install packages for backend
+          command: |
+            cd backend
+            npm install
 
-#       - save_cache:
-#           paths:
-#             - backend/node_modules
-#           key: v1-dependencies-{{ checksum "backend/package.json" }}
+      - save_cache:
+          paths:
+            - backend/node_modules
+          key: v1-dependencies-{{ checksum "backend/package.json" }}
 
-#       # run tests!
-#       - run:
-#           name: Configure environment for testing
-#           command: |
-#             export PRIVATE_KEY=myadminsecretkeymyadminsecretkeymyadminsecretkey
-#             export GRAPHQL_URL=http://localhost:8080/v1/graphql
+      # run tests!
+      - run:
+          name: Configure environment for testing
+          command: |
+            export PRIVATE_KEY=myadminsecretkeymyadminsecretkeymyadminsecretkey
+            export GRAPHQL_URL=http://localhost:8080/v1/graphql
 
-#       - restore_cache:
-#           keys:
-#             - v1-deps-{{ checksum "frontend/package.json" }}
-#             - v1-deps-
+      - restore_cache:
+          keys:
+            - v1-deps-{{ checksum "frontend/package.json" }}
+            - v1-deps-
 
-#       - run:
-#           name: Install packages for frontend
-#           command: |
-#             cd frontend
-#             npm install
+      - run:
+          name: Install packages for frontend
+          command: |
+            cd frontend
+            npm install
 
-#       - save_cache:
-#           paths:
-#             - frontend/node_modules
-#           key: v1-deps-{{ checksum "frontend/package.json" }}
+      - save_cache:
+          paths:
+            - frontend/node_modules
+          key: v1-deps-{{ checksum "frontend/package.json" }}
 
-#       - run:
-#           name: Build frontend
-#           command: |
-#             cd frontend
-#             npm run build
+      - run:
+          name: Build frontend
+          command: |
+            cd frontend
+            npm run build
+
+test:
+  environment:
+    TEST_RESULTS: *TEST_RESULTS
+
+  docker:
+    - image: circleci/python:3.7.5
+    - image: circleci/postgres:9.6-alpine-ram
+      environment:
+        POSTGRES_USER: db_master_user
+        POSTGRES_DB: db_test
+        POSTGRES_PASSWORD: db_password
+    - image: hasura/graphql-engine:latest
+      name: hasura
+      #        command: ["graphql-engine", "serve"]
+      command: ["sh", "-c", "sleep 30 && graphql-engine serve"]
+      environment:
+        HASURA_GRAPHQL_DATABASE_URL: postgres://db_master_user:db_password@localhost/db_test
+
+  steps:
+    - checkout
+
+    - restore_cache:
+        key: v1-dependencies-{{ checksum "package-lock.json" }}
+
+    - run:
+        name: "Wait for Hasura"
+        command: dockerize -wait tcp://localhost:8080 -timeout 1m
 
 #   test:
 #     docker:
@@ -129,44 +159,11 @@
 #             cd frontend
 #             npm run test
 
-# workflows:
-#   version: 2
-#   back-front:
-#     jobs:
-#       - build
-#       - test:
-#           requires:
-#             - build
-
-version: 2
-aliases:
-  - &TEST_RESULTS ./test-results/
-
-jobs:
-  test:
-    environment:
-      TEST_RESULTS: *TEST_RESULTS
-
-    docker:
-      - image: circleci/python:3.7.5
-      - image: circleci/postgres:9.6-alpine-ram
-        environment:
-          POSTGRES_USER: db_master_user
-          POSTGRES_DB: db_test
-          POSTGRES_PASSWORD: db_password
-      - image: hasura/graphql-engine:latest
-        name: hasura
-        #        command: ["graphql-engine", "serve"]
-        command: ["sh", "-c", "sleep 30 && graphql-engine serve"]
-        environment:
-          HASURA_GRAPHQL_DATABASE_URL: postgres://db_master_user:db_password@localhost/db_test
-
-    steps:
-      - checkout
-
-      - restore_cache:
-          key: v1-dependencies-{{ checksum "package-lock.json" }}
-
-      - run:
-          name: "Wait for Hasura"
-          command: dockerize -wait tcp://localhost:8080 -timeout 1m
+workflows:
+  version: 2
+  back-front:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
