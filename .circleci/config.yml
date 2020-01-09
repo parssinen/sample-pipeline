@@ -61,7 +61,7 @@ jobs:
     docker:
       # specify the version you desire here
       - image: circleci/node:10
-      - image: postgres
+      - image: postgres:9.4.1
         name: postgres
         environment:
           POSTGRES_DB: postgres
@@ -76,6 +76,17 @@ jobs:
     steps:
       - checkout
 
+      - run:
+          name: Waiting for Postgres to be ready
+          command: |
+            for i in `seq 1 10`;
+            do
+              nc -z localhost 5432 && echo Success && exit 0
+              echo -n .
+              sleep 1
+            done
+            echo Failed waiting for Postgress && exit 1
+
       - setup_remote_docker
 
       - run:
@@ -84,10 +95,6 @@ jobs:
             curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
             chmod +x ~/docker-compose
             sudo mv ~/docker-compose /usr/local/bin/docker-compose
-
-      - run:
-          name: Build service
-          command: make
 
       - run:
           name: Start container and verify it's working
