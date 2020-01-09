@@ -172,26 +172,20 @@ jobs:
     # Primary container image where all commands run
 
     docker:
+      - image: circleci/postgres:9.6.5-alpine-ram
       - image: hasura/graphql-engine
         name: hasura
         command: ["sh", "-c", "sleep 30 && graphql-engine serve"]
 
-      - image: circleci/postgres:9.6.5-alpine-ram
-
     steps:
       - checkout
-      - run: sudo apt-get update
-      - run: sudo apt-get install postgresql-client-9.6
-      - run: whoami
-      - run: |
-          psql \
-          -d $TEST_DATABASE_URL \
-          -c "CREATE TABLE test (name char(25));"
-      - run: |
-          psql \
-          -d $TEST_DATABASE_URL \
-          -c "INSERT INTO test VALUES ('John'), ('Joanna'), ('Jennifer');"
-      - run: |
-          psql \
-          -d $TEST_DATABASE_URL \
-          -c "SELECT * from test"
+      - run:
+          name: Waiting for Postgres to be ready
+          command: |
+            for i in `seq 1 10`;
+            do
+              nc -z localhost 5432 && echo Success && exit 0
+              echo -n .
+              sleep 1
+            done
+            echo Failed waiting for Postgress && exit 1
