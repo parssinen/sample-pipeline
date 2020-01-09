@@ -1,140 +1,172 @@
+# version: 2
+# jobs:
+#   build:
+#     docker:
+#       # specify the version you desire here
+#       - image: circleci/node:10
+
+#     working_directory: ~/repo
+
+#     steps:
+#       - checkout
+
+#       # Download and cache dependencies
+#       - restore_cache:
+#           keys:
+#             - v1-dependencies-{{ checksum "backend/package.json" }}
+#             # fallback to using the latest cache if no exact match is found
+#             - v1-dependencies-
+
+#       - run:
+#           name: Install packages for backend
+#           command: |
+#             cd backend
+#             npm install
+
+#       - save_cache:
+#           paths:
+#             - backend/node_modules
+#           key: v1-dependencies-{{ checksum "backend/package.json" }}
+
+#       # run tests!
+#       - run:
+#           name: Configure environment for testing
+#           command: |
+#             export PRIVATE_KEY=myadminsecretkeymyadminsecretkeymyadminsecretkey
+#             export GRAPHQL_URL=http://localhost:8080/v1/graphql
+
+#       - restore_cache:
+#           keys:
+#             - v1-deps-{{ checksum "frontend/package.json" }}
+#             - v1-deps-
+
+#       - run:
+#           name: Install packages for frontend
+#           command: |
+#             cd frontend
+#             npm install
+
+#       - save_cache:
+#           paths:
+#             - frontend/node_modules
+#           key: v1-deps-{{ checksum "frontend/package.json" }}
+
+#       - run:
+#           name: Build frontend
+#           command: |
+#             cd frontend
+#             npm run build
+
+#   test:
+#     docker:
+#       # specify the version you desire here
+#       - image: circleci/node:10
+#       - image: postgres:9.4.1
+#         name: postgres
+#         environment:
+#           POSTGRES_USER: postgres
+#           POSTGRES_DB: postgres
+#       - image: hasura/graphql-engine:v1.0.0-rc.1
+#         name: hasura
+#         command: ["sh", "-c", "sleep 30 && graphql-engine serve"]
+
+#     working_directory: ~/repo
+
+#     steps:
+#       - checkout
+
+#       - run:
+#           name: Waiting for Postgres to be ready
+#           command: |
+#             for i in `seq 1 10`;
+#             do
+#               nc -z localhost 5432 && echo Success && exit 0
+#               echo -n .
+#               sleep 1
+#             done
+#             echo Failed waiting for Postgress && exit 1
+
+#       - setup_remote_docker
+
+#       - run:
+#           name: Install Docker Compose
+#           command: |
+#             curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
+#             chmod +x ~/docker-compose
+#             sudo mv ~/docker-compose /usr/local/bin/docker-compose
+
+#       - run:
+#           name: Start container and verify it's working
+#           command: |
+#             set -x
+#             docker-compose up -d
+
+#       - run:
+#           name: Install cross-env
+#           command: sudo npm install --global cross-env
+
+#       - run:
+#           name: Install backend packages
+#           command: |
+#             cd backend
+#             npm i
+
+#       - run:
+#           name: Install frontend packages
+#           command: |
+#             cd frontend
+#             npm i
+
+#       - run:
+#           name: Test backend
+#           command: |
+#             cd backend
+#             npm run test
+
+#       - run:
+#           name: Test frontend
+#           command: |
+#             cd frontend
+#             npm run test
+
+# workflows:
+#   version: 2
+#   back-front:
+#     jobs:
+#       - build
+#       - test:
+#           requires:
+#             - build
+
 version: 2
+aliases:
+  - &TEST_RESULTS ./test-results/
+
 jobs:
-  build:
-    docker:
-      # specify the version you desire here
-      - image: circleci/node:10
-
-    working_directory: ~/repo
-
-    steps:
-      - checkout
-
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "backend/package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
-
-      - run:
-          name: Install packages for backend
-          command: |
-            cd backend
-            npm install
-
-      - save_cache:
-          paths:
-            - backend/node_modules
-          key: v1-dependencies-{{ checksum "backend/package.json" }}
-
-      # run tests!
-      - run:
-          name: Configure environment for testing
-          command: |
-            export PRIVATE_KEY=myadminsecretkeymyadminsecretkeymyadminsecretkey
-            export GRAPHQL_URL=http://localhost:8080/v1/graphql
-
-      - restore_cache:
-          keys:
-            - v1-deps-{{ checksum "frontend/package.json" }}
-            - v1-deps-
-
-      - run:
-          name: Install packages for frontend
-          command: |
-            cd frontend
-            npm install
-
-      - save_cache:
-          paths:
-            - frontend/node_modules
-          key: v1-deps-{{ checksum "frontend/package.json" }}
-
-      - run:
-          name: Build frontend
-          command: |
-            cd frontend
-            npm run build
-
   test:
-    docker:
-      # specify the version you desire here
-      - image: circleci/node:10
-      - image: postgres:9.4.1
-        name: postgres
-        environment:
-          POSTGRES_DB: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_HOST: postgres
-      - image: hasura/graphql-engine:v1.0.0-rc.1
-        name: hasura
-        command: ["sh", "-c", "sleep 30 && graphql-engine serve"]
+    environment:
+      TEST_RESULTS: *TEST_RESULTS
 
-    working_directory: ~/repo
+    docker:
+      - image: circleci/python:3.7.5
+      - image: circleci/postgres:9.6-alpine-ram
+        environment:
+          POSTGRES_USER: db_master_user
+          POSTGRES_DB: db_test
+          POSTGRES_PASSWORD: db_password
+      - image: hasura/graphql-engine:latest
+        name: hasura
+        #        command: ["graphql-engine", "serve"]
+        command: ["sh", "-c", "sleep 30 && graphql-engine serve"]
+        environment:
+          HASURA_GRAPHQL_DATABASE_URL: postgres://db_master_user:db_password@localhost/db_test
 
     steps:
       - checkout
 
-      - run:
-          name: Waiting for Postgres to be ready
-          command: |
-            for i in `seq 1 10`;
-            do
-              nc -z localhost 5432 && echo Success && exit 0
-              echo -n .
-              sleep 1
-            done
-            echo Failed waiting for Postgress && exit 1
-
-      - setup_remote_docker
+      - restore_cache:
+          key: v1-dependencies-{{ checksum "package-lock.json" }}
 
       - run:
-          name: Install Docker Compose
-          command: |
-            curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
-            chmod +x ~/docker-compose
-            sudo mv ~/docker-compose /usr/local/bin/docker-compose
-
-      - run:
-          name: Start container and verify it's working
-          command: |
-            set -x
-            docker-compose up -d
-
-      - run:
-          name: Install cross-env
-          command: sudo npm install --global cross-env
-
-      - run:
-          name: Install backend packages
-          command: |
-            cd backend
-            npm i
-
-      - run:
-          name: Install frontend packages
-          command: |
-            cd frontend
-            npm i
-
-      - run:
-          name: Test backend
-          command: |
-            cd backend
-            npm run test
-
-      - run:
-          name: Test frontend
-          command: |
-            cd frontend
-            npm run test
-
-workflows:
-  version: 2
-  back-front:
-    jobs:
-      - build
-      - test:
-          requires:
-            - build
+          name: "Wait for Hasura"
+          command: dockerize -wait tcp://localhost:8080 -timeout 1m
