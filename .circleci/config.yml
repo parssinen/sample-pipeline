@@ -63,6 +63,10 @@ jobs:
       - image: circleci/node:10
       - image: postgres
         name: postgres
+        environment:
+          POSTGRES_DB: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_HOST: postgres
       - image: hasura/graphql-engine:v1.0.0-rc.1
         name: hasura
         command: ["sh", "-c", "sleep 30 && graphql-engine serve"]
@@ -71,6 +75,25 @@ jobs:
 
     steps:
       - checkout
+
+      - setup_remote_docker
+
+      - run:
+          name: Install Docker Compose
+          command: |
+            curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
+            chmod +x ~/docker-compose
+            sudo mv ~/docker-compose /usr/local/bin/docker-compose
+
+      - run:
+          name: Build service
+          command: make
+
+      - run:
+          name: Start container and verify it's working
+          command: |
+            set -x
+            docker-compose up -d
 
       - run:
           name: Install cross-env
