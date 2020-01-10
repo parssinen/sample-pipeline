@@ -1,3 +1,4 @@
 *.env
 backend/node_modules
 backend/config/default.json
+infrastructure/development.tfvars
