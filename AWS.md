@@ -21,3 +21,8 @@
 
 Connect to your ec2, then from the ec2 connect to your RDS instance:
 `psql -h DB_HOSTNAME -p 5432 -U DB_USERNAME -W DB_NAME`
+
+
+## Terraform
+
+Terraform is based on [this](https://gist.github.com/coco98/318f24a7074a95a8b22e139f88292d5a)
