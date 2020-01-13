@@ -34,16 +34,22 @@ function App() {
         <Navbar bg="light" expand="lg">
           <Navbar.Brand href="#home">Sample Pipeline</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Link to="/">Home</Link>
+          <Link data="home" to="/">
+            Home
+          </Link>
           {user ? (
-            <Link to="/" onClick={logout}>
+            <Link data="logout" to="/" onClick={logout}>
               Log out
               <Redirect to="/" />
             </Link>
           ) : (
-            <Link to="/login">Login</Link>
+            <Link data="login" to="/login">
+              Login
+            </Link>
           )}
-          <Link to="/register">Register</Link>
+          <Link data="register" to="/register">
+            Register
+          </Link>
 
           {user ? <span>{user.username}</span> : null}
         </Navbar>
