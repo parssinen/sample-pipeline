@@ -39,6 +39,7 @@ export default function Login() {
         <Form.Group controlId="formBasicEmail">
           <Form.Label>Username</Form.Label>
           <Form.Control
+            dataId="username"
             type="text"
             placeholder="Username"
             name="email"
@@ -51,6 +52,7 @@ export default function Login() {
         <Form.Group controlId="formBasicPassword">
           <Form.Label>Password</Form.Label>
           <Form.Control
+            dataId="password"
             type="password"
             placeholder="Password"
             name="password"
@@ -61,7 +63,7 @@ export default function Login() {
         <Alert show={loginError} variant="danger">
           {loginError}
         </Alert>
-        <Button variant="primary" type="submit">
+        <Button variant="primary" type="submit" id="login">
           Login
         </Button>
       </Form>
