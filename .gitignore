@@ -1,5 +1,9 @@
+# General
 *.env
+# Backend
 backend/node_modules
 backend/config/default.json
+# Infrastructure
 infrastructure/development.tfvars
 infrastructure/.terraform
+infrastructure/terraform.tfstate
