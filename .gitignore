@@ -8,3 +8,5 @@ infrastructure/development.tfvars
 infrastructure/.terraform
 infrastructure/terraform.tfstate
 infrastructure/terraform.tfstate.backup
+# Tests
+tests/node_modules
