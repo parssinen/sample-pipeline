@@ -7,3 +7,4 @@ backend/config/default.json
 infrastructure/development.tfvars
 infrastructure/.terraform
 infrastructure/terraform.tfstate
+infrastructure/terraform.tfstate.backup
