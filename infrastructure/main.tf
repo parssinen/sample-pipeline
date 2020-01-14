@@ -129,8 +129,7 @@ resource "aws_ecs_task_definition" "datastore_hasura" {
   cpu                      = "256"
   memory                   = "512"
   execution_role_arn       = aws_iam_role.datastore_hasura_role.arn
-
-  container_definitions = <<DEFINITION
+  container_definitions    = <<DEFINITION
     [
       {
         "cpu": 250,
@@ -148,14 +147,14 @@ resource "aws_ecs_task_definition" "datastore_hasura" {
           "logDriver": "awslogs",
           "options": {
             "awslogs-group": "/ecs/datastore-hasura-${var.environment}",
-            "awslogs-region": var.region}",
+            "awslogs-region": "${var.region}",
             "awslogs-stream-prefix": "ecs"
           }
         },
         "environment": [
           {
             "name": "HASURA_GRAPHQL_ACCESS_KEY",
-            "value": var.hasura_access_key}"
+            "value": "${var.hasura_access_key}"
           },
           {
             "name": "HASURA_GRAPHQL_DATABASE_URL",
@@ -167,7 +166,7 @@ resource "aws_ecs_task_definition" "datastore_hasura" {
           },
           {
             "name": "HASURA_GRAPHQL_JWT_SECRET",
-            "value": "{\"type\":\"HS256\", \"key\": \var.hasura_jwt_secret}\"}"
+            "value": "{\"type\":\"HS256\", \"key\": \"${var.hasura_jwt_secret}\"}"
           }
         ]
       }
