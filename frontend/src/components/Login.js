@@ -35,38 +35,43 @@ export default function Login() {
 
   return (
     <div>
-      <Form onSubmit={submitHandler}>
-        <Form.Group controlId="formBasicEmail">
-          <Form.Label>Username</Form.Label>
-          <Form.Control
-            data="username-login"
-            type="text"
-            placeholder="Username"
-            name="username"
-            value={username}
-            onChange={e => setUsername(e.target.value)}
-          />
-          <Form.Text className="text-muted"></Form.Text>
-        </Form.Group>
+      <div class="main-title">
+        Login
+    </div>
+      <div class="main-content">
+        <Form onSubmit={submitHandler}>
+          <Form.Group controlId="formBasicEmail">
+            <Form.Label>Username</Form.Label>
+            <Form.Control
+              data="username-login"
+              type="text"
+              placeholder="Username"
+              name="username"
+              value={username}
+              onChange={e => setUsername(e.target.value)}
+            />
+            <Form.Text className="text-muted"></Form.Text>
+          </Form.Group>
 
-        <Form.Group controlId="formBasicPassword">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            data="password-login"
-            type="password"
-            placeholder="Password"
-            name="password"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-          />
-        </Form.Group>
-        <Alert show={loginError} variant="danger">
-          {loginError}
-        </Alert>
-        <Button data="submit" variant="primary" type="submit">
-          Login
+          <Form.Group controlId="formBasicPassword">
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+              data="password-login"
+              type="password"
+              placeholder="Password"
+              name="password"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+            />
+          </Form.Group>
+          <Alert show={loginError} variant="danger">
+            {loginError}
+          </Alert>
+          <Button data="submit" variant="primary" type="submit">
+            Login
         </Button>
-      </Form>
+        </Form>
+      </div>
     </div>
   );
 }

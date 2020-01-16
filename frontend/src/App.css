@@ -1,38 +1,105 @@
-.App {
+ /* Colors
+ #7271F8 blue
+ #7556E9 purple
+ #F3F8FF hwite 
+ */
+
+.container {
+  display: flex;
+  border-radius: 7px;
+  font-family: 'Raleway', sans-serif;
+  margin-top: 20px;
+}
+
+.main {
+  background-color: #F3F8FF;
+  max-width: 700px;
+  width: 100%;
+}
+
+.navigation {
+  width: 220px;
+  display: flex;
+  flex-direction: column;
+  background: #7372F8;
+  background: -webkit-linear-gradient(top, #7372F8, #7556E9);
+  background: -moz-linear-gradient(top, #7372F8, #7556E9);
+  background: linear-gradient(to bottom, #7372F8, #7556E9);
+  color: #fff;
+  box-shadow: 5px 0 15px 0px #7372F8;
+  z-index: 2;
+}
+
+
+.nav-title {
+  height: 75px;
+  line-height: 75px;
+  border-bottom: 2px solid #7b7af0;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.nav-links a {
+  color: #fff;
+  text-decoration: none;
+  margin: 15px 0px;
+  padding: 0px 25px;
+  font-size: 0.9em;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.nav-links a:hover {
+  opacity: 0.95;
+  text-decoration: none;
+  color: #fff;
+  /* background-color: #7556E9; */
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.nav-links a i {
+  padding-right: 15px;
+  margin-left: 10px;
+  width: 30px;
+}
+
+.main-subnav {
+  height: 75px;
+  line-height: 55px;
+  padding: 10px;
+  background-color: #fff;
+  box-shadow: 0px 8px 20px 0px #c2c2c2;
+  color: #A9AAEF;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  justify-content: space-between;
 }
 
-.App-link {
-  color: #61dafb;
+.main-subnav-user {
+  display: flex;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.main-subnav-user-icon {
+  border-radius: 50%;
+  overflow: hidden;
+  width: 55px;
+  height: 55px;
+  text-align: center;
+  background-color: #5bf5a6;
+  margin-left: 10px;
+}
+
+.main-subnav-user-icon i {
+  font-size: 1.5em;
+  color: #fff;
+}
+
+.main-title {
+  height: 45px;
+  margin: 10px;
+  line-height: 45px;
+  padding-left: 10px;
+  font-weight: 600;
+  color: #040329;
+}
+
+.main-content {
+  background-color: #fff;
+  margin: 10px;
+  padding: 15px;
 }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useParams } from 'react'
 
 export default function Users() {
     const [userlist, setUserlist] = useState([]);
@@ -33,7 +33,11 @@ export default function Users() {
     }, []); // <- empty array ensures this useEffect is ran only once
 
     return (<div>
-        <h2>Users</h2>
-        {userlist.map(user => <div key={user.id}>{user.name}</div>)}
+        <div class="main-title">
+            Users
+        </div>
+        <div class="main-content">
+            {userlist.map(user => <div key={user.id}>{user.name}</div>)}
+        </div>
     </div>)
 }

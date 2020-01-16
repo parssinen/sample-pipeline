@@ -28,36 +28,54 @@ function App() {
     setUser(null);
   };
 
+
   return (
     <Router>
       <Container>
-        <Row></Row>
-        <Navbar bg="light" expand="lg">
-          <Navbar.Brand href="#home">Sample Pipeline</Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Link data="home" to="/">
-            Home
+        <div class="navigation">
+          <div class="nav-title">
+            Sample Pipeline
+          </div>
+          <div class="nav-links">
+            <Link data="home" to="/">
+              <i class="fas fa-home"></i>
+              Home
           </Link>
-          {user ? (
-            <Link data="logout" to="/" onClick={logout}>
-              Log out
+            {user ? (
+              <Link data="logout" to="/" onClick={logout}>
+                <i class="fas fa-power-off"></i>
+                Log out
               <Redirect to="/" />
+              </Link>
+            ) : (
+                <Link data="login" to="/login">
+                  <i class="fas fa-sign-in-alt"></i>
+                  Login
             </Link>
-          ) : (
-              <Link data="login" to="/login">
-                Login
-            </Link>
-            )}
-          <Link data="register" to="/register">
-            Register
+              )}
+            <Link data="register" to="/register">
+              <i class="fas fa-user"></i>
+              Register
           </Link>
-          {user ? <Link data="users" to="/users" >Users</Link> : null}
-          {user ? <span>{user.username}</span> : null}
-        </Navbar>
-
-        <Row>
+            {user ? <Link data="users" to="/users" >
+              <i class="fas fa-users"></i>
+              Users
+              </Link> : null}
+          </div>
+        </div>
+        <div class="main">
+          <div class="main-subnav">
+            <div class="main-subnav-spacer"></div>
+            {user ? <div class="main-subnav-user">
+              <span>{user.username}</span>
+              <div class="main-subnav-user-icon">
+                <i class="fas fa-user"></i>
+              </div>
+            </div> : null}
+          </div>
           <Switch>
-            <Route path="/users">
+
+            <Route path="/users" title="Users">
               <Users />
             </Route>
             <Route path="/login">
@@ -69,8 +87,9 @@ function App() {
             <Route path="/">
               <Home />
             </Route>
+
           </Switch>
-        </Row>
+        </div>
       </Container>
     </Router>
   );
