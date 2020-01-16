@@ -33,10 +33,10 @@ export default function Users() {
     }, []); // <- empty array ensures this useEffect is ran only once
 
     return (<div>
-        <div class="main-title">
+        <div className="main-title">
             Users
         </div>
-        <div class="main-content">
+        <div className="main-content">
             {userlist.map(user => <div key={user.id}>{user.name}</div>)}
         </div>
     </div>)

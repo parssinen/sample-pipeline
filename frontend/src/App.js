@@ -32,44 +32,44 @@ function App() {
   return (
     <Router>
       <Container>
-        <div class="navigation">
-          <div class="nav-title">
+        <div className="navigation">
+          <div className="nav-title">
             Sample Pipeline
           </div>
-          <div class="nav-links">
+          <div className="nav-links">
             <Link data="home" to="/">
-              <i class="fas fa-home"></i>
+              <i className="fas fa-home"></i>
               Home
           </Link>
+            <Link data="register" to="/register">
+              <i className="fas fa-user"></i>
+              Register
+          </Link>
+            {user ? <Link data="users" to="/users" >
+              <i className="fas fa-users"></i>
+              Users
+              </Link> : null}
             {user ? (
               <Link data="logout" to="/" onClick={logout}>
-                <i class="fas fa-power-off"></i>
+                <i className="fas fa-power-off"></i>
                 Log out
               <Redirect to="/" />
               </Link>
             ) : (
                 <Link data="login" to="/login">
-                  <i class="fas fa-sign-in-alt"></i>
+                  <i className="fas fa-sign-in-alt"></i>
                   Login
             </Link>
               )}
-            <Link data="register" to="/register">
-              <i class="fas fa-user"></i>
-              Register
-          </Link>
-            {user ? <Link data="users" to="/users" >
-              <i class="fas fa-users"></i>
-              Users
-              </Link> : null}
           </div>
         </div>
-        <div class="main">
-          <div class="main-subnav">
-            <div class="main-subnav-spacer"></div>
-            {user ? <div class="main-subnav-user">
+        <div className="main">
+          <div className="main-subnav">
+            <div className="main-subnav-spacer"></div>
+            {user ? <div className="main-subnav-user">
               <span>{user.username}</span>
-              <div class="main-subnav-user-icon">
-                <i class="fas fa-user"></i>
+              <div className="main-subnav-user-icon">
+                <i className="fas fa-user"></i>
               </div>
             </div> : null}
           </div>

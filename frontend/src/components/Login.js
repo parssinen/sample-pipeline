@@ -35,10 +35,10 @@ export default function Login() {
 
   return (
     <div>
-      <div class="main-title">
+      <div className="main-title">
         Login
     </div>
-      <div class="main-content">
+      <div className="main-content">
         <Form onSubmit={submitHandler}>
           <Form.Group controlId="formBasicEmail">
             <Form.Label>Username</Form.Label>

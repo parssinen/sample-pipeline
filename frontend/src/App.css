@@ -15,6 +15,10 @@
   background-color: #F3F8FF;
   max-width: 700px;
   width: 100%;
+  background: #F3F8FF;
+  background: -webkit-linear-gradient(top, #F3F8FF, #F4F7FB);
+  background: -moz-linear-gradient(top, #F3F8FF, #F4F7FB);
+  background: linear-gradient(to bottom, #F3F8FF, #F4F7FB);
 }
 
 .navigation {
@@ -38,19 +42,29 @@
   text-align: center;
 }
 
+.nav-links {
+  overflow: hidden;
+}
+
 .nav-links a {
   color: #fff;
-  text-decoration: none;
-  margin: 15px 0px;
-  padding: 0px 25px;
+  text-decoration: none;  
+  padding: 15px 25px;
   font-size: 0.9em;
+  display: block;
+  transition: 0.3s ease all;
+}
+
+.nav-links a:last-child {
+  margin-bottom: 50px;
 }
 
 .nav-links a:hover {
-  opacity: 0.95;
+  opacity: 0.8;
   text-decoration: none;
   color: #fff;
-  /* background-color: #7556E9; */
+  background-color: #7556E9;
+  box-shadow: 0px 0px 5px #7556E9;
 }
 
 .nav-links a i {
@@ -91,15 +105,17 @@
 
 .main-title {
   height: 45px;
-  margin: 10px;
+  margin: 22px 22px 5px 22px;
   line-height: 45px;
   padding-left: 10px;
   font-weight: 600;
-  color: #040329;
+  font-size: 1.3em;
+  color: #9F95D8;
 }
 
 .main-content {
   background-color: #fff;
-  margin: 10px;
+  margin: 0px 22px 22px 22px;
   padding: 15px;
+  font-size: 0.9em;
 }

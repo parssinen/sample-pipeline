@@ -37,10 +37,10 @@ export default function Login() {
 
   return (
     <div>
-      <div class="main-title">
+      <div className="main-title">
         Register
     </div>
-      <div class="main-content">
+      <div className="main-content">
         <Form onSubmit={submitHandler}>
           <Form.Group controlId="formBasicName">
             <Form.Label>Username</Form.Label>
