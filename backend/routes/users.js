@@ -25,7 +25,7 @@ router.post('/login', async (req, res) => {
   if (!req.body.user) {
     res.send(400)
   }
-  const findUserQuery = `query findUser { users_aggregate(where: {name: {_eq: "${req.body.user}" }} ){nodes{password}}}`
+  const findUserQuery = `query findUser { users_aggregate(where: {name: {_eq: "${req.body.user}" }} ){nodes{password, id}}}`
   const queried = await query(findUserQuery)
 
   const found = queried.data.users_aggregate.nodes[0]
@@ -37,7 +37,7 @@ router.post('/login', async (req, res) => {
     bcrypt.compare(req.body.password, found.password, (err, result) => {
       if (err) throw err
       if (result) {
-        res.status(200).send({ token: token })
+        res.status(200).send({ token, id: found.id })
       } else {
         res.sendStatus(401)
       }
