@@ -1,4 +1,4 @@
- /* Colors
+/* Colors
  #7271F8 blue
  #7556E9 purple
  #F3F8FF hwite 
@@ -7,33 +7,32 @@
 .container {
   display: flex;
   border-radius: 7px;
-  font-family: 'Raleway', sans-serif;
+  font-family: "Raleway", sans-serif;
   margin-top: 20px;
 }
 
 .main {
-  background-color: #F3F8FF;
+  background-color: #f3f8ff;
   max-width: 700px;
   width: 100%;
-  background: #F3F8FF;
-  background: -webkit-linear-gradient(top, #F3F8FF, #F4F7FB);
-  background: -moz-linear-gradient(top, #F3F8FF, #F4F7FB);
-  background: linear-gradient(to bottom, #F3F8FF, #F4F7FB);
+  background: #f3f8ff;
+  background: -webkit-linear-gradient(top, #f3f8ff, #f4f7fb);
+  background: -moz-linear-gradient(top, #f3f8ff, #f4f7fb);
+  background: linear-gradient(to bottom, #f3f8ff, #f4f7fb);
 }
 
 .navigation {
   width: 220px;
   display: flex;
   flex-direction: column;
-  background: #7372F8;
-  background: -webkit-linear-gradient(top, #7372F8, #7556E9);
-  background: -moz-linear-gradient(top, #7372F8, #7556E9);
-  background: linear-gradient(to bottom, #7372F8, #7556E9);
+  background: #7372f8;
+  background: -webkit-linear-gradient(top, #7372f8, #7556e9);
+  background: -moz-linear-gradient(top, #7372f8, #7556e9);
+  background: linear-gradient(to bottom, #7372f8, #7556e9);
   color: #fff;
-  box-shadow: 5px 0 15px 0px #7372F8;
+  box-shadow: 5px 0 15px 0px #7372f8;
   z-index: 2;
 }
-
 
 .nav-title {
   height: 75px;
@@ -48,7 +47,7 @@
 
 .nav-links a {
   color: #fff;
-  text-decoration: none;  
+  text-decoration: none;
   padding: 15px 25px;
   font-size: 0.9em;
   display: block;
@@ -63,8 +62,8 @@
   opacity: 0.8;
   text-decoration: none;
   color: #fff;
-  background-color: #7556E9;
-  box-shadow: 0px 0px 5px #7556E9;
+  background-color: #7556e9;
+  box-shadow: 0px 0px 5px #7556e9;
 }
 
 .nav-links a i {
@@ -79,7 +78,7 @@
   padding: 10px;
   background-color: #fff;
   box-shadow: 0px 8px 20px 0px #c2c2c2;
-  color: #A9AAEF;
+  color: #a9aaef;
   display: flex;
   justify-content: space-between;
 }
@@ -110,7 +109,7 @@
   padding-left: 10px;
   font-weight: 600;
   font-size: 1.3em;
-  color: #9F95D8;
+  color: #9f95d8;
 }
 
 .main-content {
@@ -118,4 +117,60 @@
   margin: 0px 22px 22px 22px;
   padding: 15px;
   font-size: 0.9em;
+  border-radius: 5px;
+}
+
+/* Login */
+
+.login-form input,
+.login-form button,
+.register-form input,
+.register-form button {
+  display: block;
+  margin: 10px auto;
+}
+
+.login-form input,
+.register-form input {
+  max-width: 240px;
+  height: 40px;
+  border: none;
+  border-bottom: 1px solid #7b7af0;
+  padding: 10px;
+  width: 100%;
+  transition: 0.3s ease all;
+}
+
+.login-form input:focus,
+.register-form input:focus {
+  outline: none;
+  box-shadow: 0 4px 4px -4px #7b7af0;
+}
+
+.login-form button,
+.register-form button {
+  margin-top: 25px;
+  padding: 10px 40px;
+  border: 1px solid #7372f8;
+  background-color: #7372f8;
+  color: #fff;
+  height: 40px;
+  border-radius: 20px;
+  line-height: 20px;
+  transition: 0.3s ease all;
+}
+
+.login-form button:focus,
+.register-form button:focus {
+  box-shadow: 5px 5px 15px #7372f8;
+  outline: none;
+}
+
+.button-wrapper {
+  height: 60px;
+}
+
+.login-form button:hover,
+.register-form button:hover {
+  box-shadow: 5px 5px 15px #7372f8;
 }

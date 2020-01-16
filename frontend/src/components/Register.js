@@ -1,13 +1,39 @@
 import React, { useState } from "react";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
-import Alert from "react-bootstrap/Alert";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
+import { makeStyles } from "@material-ui/core/styles";
+import Slide from "@material-ui/core/Slide";
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    width: "100%",
+    "& > * + *": {
+      marginTop: theme.spacing(2)
+    }
+  }
+}));
 
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const [registerError, setRegisterError] = useState(null);
+  const [openState, setOpenState] = useState({
+    open: false,
+    vertical: "top",
+    horizonal: "center",
+    Transition: Slide
+  });
+
+  const classes = useStyles();
+  const { open } = openState;
+
+  const handleClose = () => {
+    setOpenState({ ...openState, open: false });
+  };
 
   const submitHandler = e => {
     e.preventDefault();
@@ -21,68 +47,69 @@ export default function Login() {
     })
       .then(res => res.json())
       .then(json => {
-        console.log("response", json);
         if (json.data.insert_users.returning) {
           // success
         } else {
           // something went wrong
-          setRegisterError("Something went wrong");
+          setOpenState({ open: true });
         }
       })
       .catch(err => {
         console.error(err);
-        setRegisterError("Something went wrong");
+        setOpenState({ open: true });
       });
   };
 
   return (
     <div>
-      <div className="main-title">
-        Register
-    </div>
-      <div className="main-content">
-        <Form onSubmit={submitHandler}>
-          <Form.Group controlId="formBasicName">
-            <Form.Label>Username</Form.Label>
-            <Form.Control
-              data="username"
-              type="text"
-              placeholder="Name"
-              value={username}
-              onChange={e => setUsername(e.target.value)}
-            />
-            <Form.Text className="text-muted"></Form.Text>
-          </Form.Group>
-
-          <Form.Group controlId="formBasicEmail">
-            <Form.Label>Email address</Form.Label>
-            <Form.Control
-              data="email"
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-            />
-            <Form.Text className="text-muted"></Form.Text>
-          </Form.Group>
-
-          <Form.Group controlId="formBasicPassword">
-            <Form.Label>Password</Form.Label>
-            <Form.Control
-              data="password"
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-            />
-          </Form.Group>
-          <Alert show={registerError} variant="danger">
-            {registerError}
+      <div className={classes.root}>
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          open={open}
+          autoHideDuration={3000}
+          onClose={handleClose}
+        >
+          <Alert onClose={handleClose} severity="error">
+            Something went wrong
+            <span role="img" aria-label="Sadface">
+              🥺
+            </span>
           </Alert>
-          <Button data="submit" variant="primary" type="submit">
-            Register
-        </Button>
-        </Form>
+        </Snackbar>
+      </div>
+      <div className="main-title">Register</div>
+      <div className="main-content">
+        <form onSubmit={submitHandler} className="register-form">
+          <input
+            data="username"
+            required
+            type="text"
+            placeholder="Name"
+            value={username}
+            onChange={e => setUsername(e.target.value)}
+          />
+          <input
+            data="email"
+            required
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+          />
+          <input
+            data="password"
+            required
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+          />
+          <div className="button-wrapper">
+            <button data="submit" variant="primary" type="submit">
+              Register
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );
