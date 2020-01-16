@@ -1,13 +1,39 @@
 import React, { useState } from "react";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
 import { setUser } from "../stateContext";
-import Alert from "react-bootstrap/Alert";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
+import { makeStyles } from "@material-ui/core/styles";
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    width: "100%",
+    "& > * + *": {
+      marginTop: theme.spacing(2)
+    }
+  }
+}));
 
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [loginError, setLoginError] = useState("");
+  const [messageState, setMessageState] = useState({
+    open: false,
+    vertical: "top",
+    horizonal: "center",
+    message: null,
+    severity: null
+  });
+
+  const classes = useStyles();
+  const { open, message, severity } = messageState;
+
+  const handleClose = () => {
+    setMessageState({ ...messageState, open: false });
+  };
 
   const submitHandler = e => {
     e.preventDefault();
@@ -29,44 +55,56 @@ export default function Login() {
       })
       .catch(err => {
         console.error(err);
-        setLoginError("Wrong username and/or password!");
+        setMessageState({
+          open: true,
+          severity: "error",
+          message: "Wrong username and/or password 🤨"
+        });
       });
   };
 
   return (
     <div>
-      <Form onSubmit={submitHandler}>
-        <Form.Group controlId="formBasicEmail">
-          <Form.Label>Username</Form.Label>
-          <Form.Control
+      <div className={classes.root}>
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          open={open}
+          autoHideDuration={3000}
+          onClose={handleClose}
+        >
+          <Alert onClose={handleClose} severity={severity}>
+            {message}
+          </Alert>
+        </Snackbar>
+      </div>
+      <div className="main-title">Login</div>
+      <div className="main-content">
+        <form onSubmit={submitHandler} className="login-form">
+          <input
             data="username-login"
+            required
             type="text"
             placeholder="Username"
             name="username"
             value={username}
             onChange={e => setUsername(e.target.value)}
           />
-          <Form.Text className="text-muted"></Form.Text>
-        </Form.Group>
-
-        <Form.Group controlId="formBasicPassword">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
+          <input
             data="password-login"
+            required
             type="password"
             placeholder="Password"
             name="password"
             value={password}
             onChange={e => setPassword(e.target.value)}
           />
-        </Form.Group>
-        <Alert show={loginError} variant="danger">
-          {loginError}
-        </Alert>
-        <Button data="submit" variant="primary" type="submit">
-          Login
-        </Button>
-      </Form>
+          <div className="button-wrapper">
+            <button data="submit" variant="primary" type="submit">
+              Login
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
