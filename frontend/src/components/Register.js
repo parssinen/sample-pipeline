@@ -79,6 +79,7 @@ export default function Login() {
       </div>
       <div className="main-title">Register</div>
       <div className="main-content">
+        <div className="logo"></div>
         <form onSubmit={submitHandler} className="register-form">
           <input
             data="username"
