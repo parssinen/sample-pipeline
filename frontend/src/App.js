@@ -30,7 +30,7 @@ function App() {
     <Router>
       <Container>
         <div className="navigation">
-          <div className="nav-title">LoginTemplateProject</div>
+          <div className="nav-title">SimpleUSR</div>
           <div className="nav-links">
             <Link data="home" to="/">
               <i className="fas fa-home"></i>
