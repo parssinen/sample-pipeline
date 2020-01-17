@@ -25,11 +25,12 @@ export default function Login() {
     open: false,
     vertical: "top",
     horizonal: "center",
-    Transition: Slide
+    Transition: Slide,
+    message: ""
   });
 
   const classes = useStyles();
-  const { open } = openState;
+  const { open, message } = openState;
 
   const handleClose = () => {
     setOpenState({ ...openState, open: false });
@@ -47,16 +48,16 @@ export default function Login() {
     })
       .then(res => res.json())
       .then(json => {
-        if (json.data.insert_users.returning) {
+        if (json.data) {
           // success
         } else {
           // something went wrong
-          setOpenState({ open: true });
+          setOpenState({ open: true, message: json.error });
         }
       })
       .catch(err => {
         console.error(err);
-        setOpenState({ open: true });
+        setOpenState({ open: true, message: err.message });
       });
   };
 
@@ -70,8 +71,8 @@ export default function Login() {
           onClose={handleClose}
         >
           <Alert onClose={handleClose} severity="error">
-            Something went wrong
-            <span role="img" aria-label="Sadface">
+            {message}
+            <span role="img" aria-label="Sadface" style={{ display: "inline" }}>
               🥺
             </span>
           </Alert>
