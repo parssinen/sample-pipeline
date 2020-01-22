@@ -13,6 +13,7 @@ Broiler-plate contains following components
 Broiler-plate was developed using the following versions, most probably works on older versions
 * Node 12.10.0
 * React 16.12.0
+* [Hasura CLI](https://docs.hasura.io/1.0/graphql/manual/hasura-cli/install-hasura-cli.html)
 
 # Installing Broiler-plate
 
