@@ -39,6 +39,21 @@ do
             # Make sure node is not running to avoid collision
             if pgrep -x "node" 2> /dev/null; then killall node; fi
 
+            # Make sure prerequisites are met
+            if hash hasura 2>/dev/null; then
+                clear
+            else
+                echo "Install Hasura"
+                break
+            fi
+
+            if hash node 2>/dev/null; then
+                clear
+            else
+                echo "Install Node.js"
+                break
+            fi
+
             # Configure HASURA API
             touch $pwd/api/.env
             read -p "Enter database URL [postgres://postgres:@postgres:5432/postgres]" dburl
@@ -66,7 +81,7 @@ do
 
             # Apply migrations
             cd $pwd/hasura/migrations/1577946609171_init
-            hasura migrate apply --endpoint ${gqlurl%v1/graphql} --admin-secret ${adminsecret} > /dev/null &
+            hasura migrate apply --endpoint ${gqlurl%/v1/graphql} --admin-secret ${adminsecret} > /dev/null &
 
             # Configure Node.js backend
             echo "${green}Hasura online${reset}"
