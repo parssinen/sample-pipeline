@@ -1,5 +1,6 @@
 # General
 *.env
+nohup.out
 # Backend
 backend/node_modules
 backend/config/default.json
