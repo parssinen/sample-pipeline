@@ -63,9 +63,10 @@ do
             printf "\n"
             cd $pwd/api
             docker-compose up --detach 2> /dev/null
+
             # Apply migrations
-            # cd ../hasura/migrations/1577946609171_init
-            # hasura migrate apply --endpoint $dburl > /dev/null &
+            cd $pwd/hasura/migrations/1577946609171_init
+            hasura migrate apply --endpoint ${gqlurl%v1/graphql} --admin-secret ${adminsecret} > /dev/null &
 
             # Configure Node.js backend
             echo "${green}Hasura online${reset}"
@@ -76,8 +77,8 @@ do
             echo -e "{\"myprivatekey\":\""$jwtsecret"\", \"graphql_url\":\""$gqlurl"\"}" >> $pwd/backend/config/default.json       
 
             cd $pwd/backend
-            npm install 2> /dev/null
-            npm install nodemon -g 2> /dev/null
+            npm install &> /dev/null
+            npm install nodemon -g &> /dev/null
             nohup nodemon index.js &
 
             # Configure React frontend
@@ -86,7 +87,7 @@ do
             printf "\n"
             echo "Booting up frontend..."
             printf "\n"
-            npm install 2> /dev/null
+            npm install &> /dev/null
             nohup npm start &
 
             # Run until a key is pressed
