@@ -79,6 +79,8 @@ do
             cd $pwd/api
             docker-compose up --detach 2> /dev/null
 
+            sleep 5
+
             # Apply migrations
             cd $pwd/hasura/migrations/1577946609171_init
             hasura migrate apply --endpoint ${gqlurl%/v1/graphql} --admin-secret ${adminsecret} > /dev/null &
