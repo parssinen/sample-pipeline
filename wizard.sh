@@ -81,7 +81,7 @@ do
 
             # Apply migrations
             cd $pwd/hasura/migrations/1577946609171_init
-            hasura migrate apply --endpoint ${gqlurl%v1/graphql} --admin-secret ${adminsecret} > /dev/null &
+            hasura migrate apply --endpoint ${gqlurl%/v1/graphql} --admin-secret ${adminsecret} > /dev/null &
 
             # Configure Node.js backend
             echo "${green}Hasura online${reset}"
