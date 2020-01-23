@@ -100,6 +100,7 @@ do
 
             # Configure React frontend
             cd $pwd/frontend
+            export PORT=3001
             echo "${green}Backend online${reset}"
             printf "\n"
             echo "Booting up frontend..."

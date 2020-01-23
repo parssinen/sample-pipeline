@@ -1,9 +1,20 @@
 version: 2
 jobs:
   backend:
+    parallelism: 2
     docker:
-      # specify the version you desire here
       - image: circleci/node:10
+        environment:
+          PGHOST: 127.0.0.1
+      - image: hasura/graphql-engine:v1.0.0-rc.1
+        environment:
+          HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:@postgres:5432/postgres
+          PGHOST: 127.0.0.1
+      - image: circleci/postgres:latest
+        name: postgres
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: postgres
 
     working_directory: ~/repo/backend
 
@@ -16,6 +27,32 @@ jobs:
             - v1-dependencies-{{ checksum "backend/package.json" }}
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
+
+      - run:
+          name: boot up postgresql
+          command: |
+            docker run -d -p 5432:5432 postgres
+            pg_ctl -D /var/lib/postgresql/data -l logfile start
+
+      - run:
+          name: install dockerize
+          command: wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+          environment:
+            DOCKERIZE_VERSION: v0.3.0
+
+      - run:
+          name: Wait for db
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+
+      # - run:
+      #     name: boot up hasura
+      #     command: docker run -d -p 8080:8080 -e HASURA_GRAPHQL_DATABASE_URL=postgres://postgres:@localhost:5432/postgres hasura/graphql-engine
+
+      - run:
+          name: Configure backend
+          command: |
+            cp backend/config/default.example.json backend/config/default.json
+            sed -i 's/"myprivatekey",/"${HASURA_GRAPHQL_ADMIN_SECRET}",/g' backend/config/default.json
 
       - run:
           name: Install packages for backend
@@ -54,27 +91,19 @@ jobs:
           command: |
             cd frontend
             npm install
-
       - save_cache:
           paths:
             - frontend/node_modules
           key: v1-deps-{{ checksum "frontend/package.json" }}
 
       - run:
-          name: Test frontend
-          command: |
-            cd frontend
-            npm test
-
-      - run:
           name: Build frontend
           command: |
             cd frontend
             npm build
-
 workflows:
   version: 2
-  back-front:
+  build-and-test:
     jobs:
       - backend
       - frontend

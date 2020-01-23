@@ -8,7 +8,7 @@ describe('Users endpoint', () => {
     request(app)
       .post('/api/users/register')
       .send({
-        username: 'Testuser',
+        username: testuserName,
         password: 'Testpassword',
       })
       .expect(418)
@@ -21,7 +21,7 @@ describe('Users endpoint', () => {
     request(app)
       .post('/api/users/register')
       .send({
-        username: 'Testuser',
+        username: testuserName,
         email: 'Testpassword',
       })
       .expect(418)
@@ -34,7 +34,7 @@ describe('Users endpoint', () => {
     request(app)
       .post('/api/users/register')
       .send({
-        email: 'Testuser',
+        email: testuserName,
         password: 'Testpassword',
       })
       .expect(418)
@@ -47,7 +47,7 @@ describe('Users endpoint', () => {
     request(app)
       .post('/api/users/register')
       .send({
-        username: 'Testuser',
+        username: testuserName,
         password: 'Testpassword',
         email: 'test@email.com',
       })
@@ -59,7 +59,7 @@ describe('Users endpoint', () => {
   })
   it('Log testuser in', async () => {
     const login = {
-      user: 'Testuser',
+      user: testuserName,
       password: 'Testpassword',
     }
     try {
@@ -76,7 +76,7 @@ describe('Users endpoint', () => {
 describe('Cleanup ', () => {
   it('Delete testusers', async done => {
     const deleteTestuserMutation = `mutation deleteTest {
-            delete_users(where: {name: {_eq: "Testuser"}}) {
+            delete_users(where: {name: {_eq: ${testuserName}}}) {
               affected_rows
             }
           }`

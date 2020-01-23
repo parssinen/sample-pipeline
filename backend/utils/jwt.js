@@ -1,4 +1,4 @@
-const config = require('config')
+const env = require('dotenv').config()
 const jwt = require('jsonwebtoken')
 
 const token = jwt.sign(
@@ -12,7 +12,7 @@ const token = jwt.sign(
       'x-hasura-default-role': 'user',
     },
   },
-  config.get('myprivatekey')
+  process.env.PRIVATE_KEY
 )
 
 module.exports = token
