@@ -1,6 +1,7 @@
 version: 2
 jobs:
   backend:
+    parallelism: 2
     docker:
       - image: circleci/node:10
         environment:
