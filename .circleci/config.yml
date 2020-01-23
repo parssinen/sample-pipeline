@@ -3,6 +3,8 @@ jobs:
   backend:
     docker:
       - image: circleci/node:10
+        environment:
+          PGHOST: 127.0.0.1
       - image: hasura/graphql-engine:v1.0.0-rc.1
         environment:
           HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:@postgres:5432/postgres
