@@ -20,12 +20,8 @@ jobs:
       - run:
           name: Configure backend
           command: |
-            touch backend/config/default.json
-            echo "HASURA_GRAPHQL_DATABASE_URL=${HASURA_GRAPHQL_DATABASE_URL}" >> backend/config/default.json
-            echo "HASURA_GRAPHQL_ENABLE_CONSOLE=false" >> backend/config/default.json
-            echo "HASURA_GRAPHQL_ENABLED_LOG_TYPES=${HASURA_GRAPHQL_ENABLED_LOG_TYPES}" >> backend/config/default.json
-            echo "HASURA_GRAPHQL_ADMIN_SECRET=${HASURA_GRAPHQL_ADMIN_SECRET}" >> backend/config/default.json
-            echo "HASURA_GRAPHQL_JWT_SECRET={\"type\":\"HS256\", \"key\":\"${HASURA_GRAPHQL_JWT_SECRET}\"}"  >> backend/config/default.json
+            cp backend/config/default.example.json backend/config/default.json
+            sed -i 's/"myprivatekey",/"${HASURA_GRAPHQL_ADMIN_SECRET}",/g' backend/config/default.json
 
       - run:
           name: Install packages for backend
