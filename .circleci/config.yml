@@ -3,14 +3,14 @@ jobs:
   backend:
     docker:
       # - image: circleci/node:10
+      - image: hasura/graphql-engine:v1.0.0-rc.1
+        environment:
+          HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:@localhost:5432/postgres
       - image: circleci/postgres:latest
         name: postgres
         environment:
           POSTGRES_USER: postgres
           POSTGRES_DB: postgres
-      - image: hasura/graphql-engine:v1.0.0-rc.1
-        environment:
-          HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:@localhost:5432/postgres
 
     working_directory: ~/repo/backend
 
