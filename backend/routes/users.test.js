@@ -1,5 +1,4 @@
 const request = require('supertest')
-const query = require('../utils/queries')
 const app = require('../index')
 
 const testuserName = 'Testuser'

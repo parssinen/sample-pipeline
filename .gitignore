@@ -1,4 +1,13 @@
+# General
 *.env
+nohup.out
+# Backend
 backend/node_modules
 backend/config/default.json
-backend/.env
+# Infrastructure
+infrastructure/development.tfvars
+infrastructure/.terraform
+infrastructure/terraform.tfstate
+infrastructure/terraform.tfstate.backup
+# Tests
+tests/node_modules

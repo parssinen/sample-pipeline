@@ -3,10 +3,9 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
 import Login from "./components/Login";
 import Register from "./components/Register";
-import Navbar from "react-bootstrap/Navbar";
+import Users from "./components/Users";
 import Home from "./components/Home";
 import { Redirect } from "react-router-dom";
 import { useGlobalState, setUser } from "./stateContext";
@@ -30,32 +29,53 @@ function App() {
   return (
     <Router>
       <Container>
-        <Row></Row>
-        <Navbar bg="light" expand="lg">
-          <Navbar.Brand href="#home">Sample Pipeline</Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Link data="home" to="/">
-            Home
-          </Link>
-          {user ? (
-            <Link data="logout" to="/" onClick={logout}>
-              Log out
-              <Redirect to="/" />
+        <div className="navigation">
+          <div className="nav-title">SimpleUSR</div>
+          <div className="nav-links">
+            <Link data="home" to="/">
+              <i className="fas fa-home"></i>
+              Home
             </Link>
-          ) : (
-            <Link data="login" to="/login">
-              Login
+            <Link data="register" to="/register">
+              <i className="fas fa-user"></i>
+              Register
             </Link>
-          )}
-          <Link data="register" to="/register">
-            Register
-          </Link>
-
-          {user ? <span>{user.username}</span> : null}
-        </Navbar>
-
-        <Row>
+            {user ? (
+              <Link data="users" to="/users">
+                <i className="fas fa-users"></i>
+                Users
+              </Link>
+            ) : null}
+            {user ? (
+              <Link data="logout" to="/" onClick={logout}>
+                <i className="fas fa-power-off"></i>
+                Log out
+                <Redirect to="/" />
+              </Link>
+            ) : (
+              <Link data="login" to="/login">
+                <i className="fas fa-sign-in-alt"></i>
+                Login
+              </Link>
+            )}
+          </div>
+        </div>
+        <div className="main">
+          <div className="main-subnav">
+            <div className="main-subnav-spacer"></div>
+            {user ? (
+              <div className="main-subnav-user">
+                <span>{user.username}</span>
+                <div className="main-subnav-user-icon">
+                  <i className="fas fa-user"></i>
+                </div>
+              </div>
+            ) : null}
+          </div>
           <Switch>
+            <Route path="/users" title="Users">
+              <Users />
+            </Route>
             <Route path="/login">
               <Login />
             </Route>
@@ -66,7 +86,7 @@ function App() {
               <Home />
             </Route>
           </Switch>
-        </Row>
+        </div>
       </Container>
     </Router>
   );
