@@ -4,6 +4,8 @@ jobs:
     docker:
       # specify the version you desire here
       - image: circleci/node:10
+      - image: circleci/postgres:9.6.2-alpine
+      - image: hasura/graphql-engine:v1.0.0-rc.1
 
     working_directory: ~/repo/backend
 
@@ -16,6 +18,19 @@ jobs:
             - v1-dependencies-{{ checksum "backend/package.json" }}
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
+
+      - run:
+          name: install dockerize
+          command: wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && sudo tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+          environment:
+            DOCKERIZE_VERSION: v0.3.0
+      - run:
+          name: Wait for db
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+
+      - run:
+          name: boot up hasura
+          command: docker run -d -p 8080:8080 -e HASURA_GRAPHQL_DATABASE_URL=postgres://postgres:@localhost:5432/postgres hasura/graphql-engine
 
       - run:
           name: Configure backend
@@ -70,7 +85,7 @@ jobs:
             npm build
 workflows:
   version: 2
-  back-front:
+  build-and-test:
     jobs:
       - backend
       - frontend
